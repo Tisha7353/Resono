@@ -1,5 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-	baseURL: import.meta.env.MODE === "development" ? "https://resono.onrender.com" : "/api",
+	baseURL: import.meta.env.MODE === "development"
+		? "http://localhost:5000" 
+		: "https://resono.onrender.com", 
 });
