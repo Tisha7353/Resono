@@ -70,7 +70,6 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
-import fs from "fs";
 
 if (process.env.NODE_ENV === "production") {
   const distPath = path.join(__dirname, "dist", "index.html");
