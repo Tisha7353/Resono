@@ -22,8 +22,8 @@ interface ChatStore {
 	setSelectedUser: (user: User | null) => void;
 }
 
-const baseURL = import.meta.env.MODE === "development" ? "http://localhost:5000" 
-		: "https://resono.onrender.com"
+const baseURL = import.meta.env.MODE === "development" ? "http://localhost:5000/api" 
+		: "https://resono.onrender.com/api"
 
 const socket = io(baseURL, {
 	autoConnect: false, // only connect if user is authenticated
