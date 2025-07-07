@@ -62,7 +62,9 @@ cron.schedule("0 * * * *", () => {
 		});
 	}
 });
-
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is running");
+});
 app.use("/api/users", userRoutes);
 
 app.use("/api/admin", adminRoutes);
