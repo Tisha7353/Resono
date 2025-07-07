@@ -70,12 +70,17 @@ app.use("/api/songs", songRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/stats", statRoutes);
 
+import fs from "fs";
+
 if (process.env.NODE_ENV === "production") {
+  const distPath = path.join(__dirname, "dist", "index.html");
+  console.log("Looking for:", distPath, fs.existsSync(distPath)); 
   app.use(express.static(path.join(__dirname, "dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+    res.sendFile(distPath);
   });
 }
+
 
 
 // error handler
