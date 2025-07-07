@@ -75,7 +75,7 @@ if (process.env.NODE_ENV === "production") {
   const distPath = path.join(__dirname, "dist", "index.html");
   console.log("Looking for:", distPath, fs.existsSync(distPath)); 
   app.use(express.static(path.join(__dirname, "dist")));
-  app.get("*", (req, res) => {
+  app.get("/*", (req, res) => {
     res.sendFile(distPath);
   });
 }
