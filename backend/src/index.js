@@ -35,6 +35,9 @@ app.use(
 );
 
 app.use(express.json()); // to parse req.body
+app.get("/", (req, res) => {
+  res.status(200).send("Backend is running");
+});
 app.use(clerkMiddleware()); // this will add auth to req obj => req.auth
 app.use(
 	fileUpload({
@@ -62,9 +65,7 @@ cron.schedule("0 * * * *", () => {
 		});
 	}
 });
-app.get("/", (req, res) => {
-  res.status(200).send("Backend is running");
-});
+
 app.use("/api/users", userRoutes);
 
 app.use("/api/admin", adminRoutes);
