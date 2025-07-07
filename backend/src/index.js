@@ -62,27 +62,21 @@ cron.schedule("0 * * * *", () => {
 		});
 	}
 });
-console.log("Registering /api/users");
+
 app.use("/api/users", userRoutes);
-console.log("Registering /api/adminRoutes");
+
 app.use("/api/admin", adminRoutes);
-console.log("Registering /api/authRoutes");
 app.use("/api/auth", authRoutes);
-console.log("Registering /api/song");
 app.use("/api/songs", songRoutes);
-console.log("Registering /api/aluub");
 app.use("/api/albums", albumRoutes);
-console.log("Registering /api/stats");
 app.use("/api/stats", statRoutes);
 
 
 if (process.env.NODE_ENV === "production") {
-  const distPath = path.join(__dirname, "dist", "index.html");
-  console.log("Looking for:", distPath, fs.existsSync(distPath)); 
-  app.use(express.static(path.join(__dirname, "dist")));
-  app.get("/*", (req, res) => {
-    res.sendFile(distPath);
-  });
+	app.use(express.static(path.join(__dirname, "../frontend/dist")));
+	app.get("/", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
+	});
 }
 
 
