@@ -4,7 +4,7 @@ import { Message } from "../models/message.model.js";
 export const initializeSocket = (server) => {
 	const io = new Server(server, {
 		cors: {
-			origin: "https://resono.vercel.app/",
+			origin: "https://resono.vercel.app",
 			credentials: true,
 		},
 	});
