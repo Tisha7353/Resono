@@ -1,11 +1,9 @@
-
 import Topbar from "@/components/TopBar";
 import { useChatStore } from "@/stores/useChatStore";
 import { useUser } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import UsersList from "./components/UsersList";
 import ChatHeader from "./components/ChatHeader";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import MessageInput from "./components/MessageInput";
 
@@ -20,6 +18,7 @@ const formatTime = (date: string) => {
 const ChatPage = () => {
 	const { user } = useUser();
 	const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
+	const bottomRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (user) fetchUsers();
@@ -29,56 +28,59 @@ const ChatPage = () => {
 		if (selectedUser) fetchMessages(selectedUser.clerkId);
 	}, [selectedUser, fetchMessages]);
 
-	console.log({ messages });
+	useEffect(() => {
+		bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [messages]);
 
 	return (
-		<main className='h-full rounded-lg bg-gradient-to-b from-zinc-800 to-zinc-900 overflow-hidden'>
-			<Topbar />
+		<main className='h-[100dvh] bg-gradient-to-b  from-zinc-800 to-zinc-900 flex flex-col'>
+			<div className=""><Topbar /></div>
 
-			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr] h-[calc(100vh-180px)]'>
-				<UsersList />
-
-				{/* chat message */}
-				<div className='flex flex-col h-full'>
+			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr]  flex-1 overflow-hidden'>
+		{selectedUser ? (
+			<div className="mt-12">	<UsersList /></div>
+		):<div >	<UsersList /></div>}
+				<div className='flex flex-col h-full overflow-hidden'>
 					{selectedUser ? (
 						<>
-							<ChatHeader />
+						<div className="mt-12"><ChatHeader  /></div>	
 
-							{/* Messages */}
-							<ScrollArea className='h-[calc(100vh-340px)]'>
-								<div className='p-4 space-y-4'>
-									{messages.map((message) => (
+							{/* Messages area */}
+							<div className='flex-1 overflow-y-auto px-4 py-3  space-y-4'>
+								{messages.map((message) => (
+									<div
+										key={message._id}
+										className={`flex items-start gap-3 ${
+											message.senderId === user?.id ? "flex-row-reverse" : ""
+										}`}
+									>
+										<Avatar className='size-8'>
+											<AvatarImage
+												src={
+													message.senderId === user?.id
+														? user.imageUrl
+														: selectedUser.imageUrl
+												}
+											/>
+										</Avatar>
+
 										<div
-											key={message._id}
-											className={`flex items-start gap-3 ${
-												message.senderId === user?.id ? "flex-row-reverse" : ""
+											className={`rounded-lg p-2 max-w-[80%] text-sm break-words ${
+												message.senderId === user?.id ? "bg-[#d63754]" : "bg-zinc-800"
 											}`}
 										>
-											<Avatar className='size-8'>
-												<AvatarImage
-													src={
-														message.senderId === user?.id
-															? user.imageUrl
-															: selectedUser.imageUrl
-													}
-												/>
-											</Avatar>
-
-											<div
-												className={`rounded-lg p-3 max-w-[70%]
-													${message.senderId === user?.id ? "bg-[#d63754]" : "bg-zinc-800"}
-												`}
-											>
-												<p className='text-sm'>{message.content}</p>
-												<span className='text-xs text-zinc-300 mt-1 block'>
-													{formatTime(message.createdAt)}
-												</span>
-											</div>
+											<p>{message.content}</p>
+											<span className='text-xs text-zinc-300 mt-1 block'>
+												{formatTime(message.createdAt)}
+											</span>
 										</div>
-									))}
-								</div>
-							</ScrollArea>
+									</div>
+								))}
 
+								<div ref={bottomRef} />
+							</div>
+
+							{/* Message Input */}
 							<MessageInput />
 						</>
 					) : (
@@ -89,6 +91,7 @@ const ChatPage = () => {
 		</main>
 	);
 };
+
 export default ChatPage;
 
 const NoConversationPlaceholder = () => (

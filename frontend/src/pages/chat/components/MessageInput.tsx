@@ -11,27 +11,39 @@ const MessageInput = () => {
 	const { selectedUser, sendMessage } = useChatStore();
 
 	const handleSend = () => {
-		if (!selectedUser || !user || !newMessage) return;
+		if (!selectedUser || !user || !newMessage.trim()) return;
 		sendMessage(selectedUser.clerkId, user.id, newMessage.trim());
 		setNewMessage("");
 	};
 
 	return (
-		<div className='p-4 mt-auto border-t border-zinc-800'>
-			<div className='flex gap-2'>
-				<Input
-					placeholder='Type a message'
-					value={newMessage}
-					onChange={(e) => setNewMessage(e.target.value)}
-					className='bg-zinc-800 border-none'
-					onKeyDown={(e) => e.key === "Enter" && handleSend()}
-				/>
+		<div className="w-full px-2 py-2 border-t border-zinc-800 bg-zinc-900">
+	<form
+		onSubmit={(e) => {
+			e.preventDefault();
+			handleSend();
+		}}
+		className="flex items-center gap-2"
+	>
+		<Input
+			placeholder="Type a message"
+			value={newMessage}
+			onChange={(e) => setNewMessage(e.target.value)}
+			className="w-full bg-zinc-800 border-none text-sm px-3 py-2"
+		/>
 
-				<Button size={"icon"} onClick={handleSend} disabled={!newMessage.trim()}>
-					<Send className='size-4' />
-				</Button>
-			</div>
-		</div>
+		<Button
+			type="submit"
+			size="icon"
+			className="shrink-0 w-10 h-10 flex items-center justify-center"
+			disabled={!newMessage.trim()}
+		>
+			<Send className="w-4 h-4" />
+		</Button>
+	</form>
+</div>
+
 	);
 };
+
 export default MessageInput;

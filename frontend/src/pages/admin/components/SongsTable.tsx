@@ -2,10 +2,22 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { Calendar, Trash2 } from "lucide-react";
-
-const SongsTable = () => {
+interface AlbumsTableProps {
+  searchTerm: string;
+  sortOrder: "asc" | "desc";
+}
+const SongsTable : React.FC<AlbumsTableProps> = ({ searchTerm, sortOrder }) => {
 	const { songs,albums,fetchStats, isLoading, error, deleteSong } = useMusicStore();
     
+		const filteredSongs = songs.filter((song) =>
+		song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+		song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+	).sort((a, b) =>
+  sortOrder === "asc"
+    ? new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+);
+
 	if (isLoading) {
 		return (
 			<div className='flex items-center justify-center py-8'>
@@ -52,7 +64,7 @@ const deleteSongClick=async(songId:string)=>{
       </TableCell>
     </TableRow>
   ) : (
-				songs.map((song) => (
+				filteredSongs.map((song) => (
 					<TableRow key={song._id} className='hover:bg-zinc-800/50'>
 						<TableCell>
 							<img src={song.imageUrl} alt={song.title} className='size-10 rounded object-cover' />

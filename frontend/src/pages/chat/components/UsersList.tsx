@@ -2,10 +2,12 @@ import UsersListSkeleton from "@/components/skeletons/UserListSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChatStore } from "@/stores/useChatStore";
+import { useUser } from "@clerk/clerk-react";
 
 const UsersList = () => {
 	const { users, selectedUser, isLoading, setSelectedUser, onlineUsers } = useChatStore();
-
+const { user } = useUser();
+const loggedInClerkId = user?.id;
 	return (
 		<div className='border-r border-zinc-800'>
 			<div className='flex flex-col h-full'>
@@ -35,7 +37,9 @@ const UsersList = () => {
 									</div>
 
 									<div className='flex-1 min-w-0 lg:block hidden'>
-										<span className='font-medium truncate'>{user.fullName}</span>
+										<span className='font-medium truncate'>
+  {user.fullName} {user.clerkId === loggedInClerkId ? "(you)" : ""}
+</span>
 									</div>
 								</div>
 							))
