@@ -29,7 +29,7 @@ initializeSocket(httpServer);
 
 app.use(
 	cors({
-		origin: "https://resono.vercel.app",
+	origin: "https://resono.vercel.app",
 		credentials: true,
 	})
 );
