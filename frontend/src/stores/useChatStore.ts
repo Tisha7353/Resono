@@ -24,6 +24,7 @@ interface ChatStore {
 
 const baseURL = import.meta.env.MODE === "development" ? "http://localhost:5000" 
 		: "https://resono.onrender.com"
+
 const socket = io(baseURL, {
 	autoConnect: false, // only connect if user is authenticated
 	withCredentials: true,
