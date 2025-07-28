@@ -59,9 +59,23 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 	if (loading)
 		return (
-			<div className='h-screen w-full flex items-center justify-center'>
-				<Loader className='size-8 text-[#D63754] animate-spin' />
-			</div>
+			<div className="flex h-screen w-full justify-center  items-center ">
+  <div className="flex items-end h-14 gap-2">
+    {[0.3, 0.7, 0.5, 0.9, 0.2].map((height, index) => (
+      <div 
+        key={index}
+        className="w-2 bg-gradient-to-r from-[#D63754] to-purple-900 rounded-full"
+        style={{
+          height: `${height * 100}%`,
+          animation: `equalize 1.5s ease-in-out infinite ${index * 0.1}s`,
+          transformOrigin: 'bottom'
+        }}
+      />
+    ))}
+  </div>
+  
+</div>
+
 		);
 
 	return <>{children}</>;

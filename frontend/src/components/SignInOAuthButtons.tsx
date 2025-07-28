@@ -17,7 +17,7 @@ const SignInOAuthButtons = () => {
 	};
 
 	return (
-		<Button onClick={signInWithGoogle} variant={"secondary"} className='w-full  border-2 text-white border-zinc-200 h-11'>
+		<Button onClick={signInWithGoogle} variant={"secondary"} className='  border-2 text-white border-zinc-200 h-11'>
 			
 			Login
 		</Button>

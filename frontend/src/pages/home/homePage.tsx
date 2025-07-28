@@ -1,6 +1,6 @@
 import TopBar from "@/components/TopBar";
 import { useMusicStore } from "@/stores/useMusicStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FeaturedSection from "./components/featuredSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SectionGrid from "./components/sectionGrid";
@@ -16,7 +16,7 @@ const HomePage = () => {
 		featuredSongs,
 		trendingSongs,
 	} = useMusicStore();
-
+  const [greeting, setGreeting] = useState("Hello");
 	const { initializeQueue } = usePlayerStore();
 
 	useEffect(() => {
@@ -31,13 +31,22 @@ const HomePage = () => {
 			initializeQueue(allSongs);
 		}
 	}, [initializeQueue, madeForYouSongs, trendingSongs, featuredSongs]);
-
+ useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) {
+      setGreeting("Good morning");
+    } else if (hour < 18) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good evening");
+    }
+  }, []);
 	return (
 		<main className='rounded-md overflow-hidden h-full bg-gradient-to-b from-zinc-800 to-zinc-900'>
 			<TopBar />
 			<ScrollArea className='h-[calc(100vh-180px)]'>
 				<div className='p-4 sm:p-6'>
-					<h1 className='text-2xl sm:text-3xl font-bold mb-6'>Good afternoon</h1>
+					<h1 className='text-2xl sm:text-3xl font-bold mb-6'>{greeting}</h1>
 					<FeaturedSection />
 
 					<div className='space-y-8'>

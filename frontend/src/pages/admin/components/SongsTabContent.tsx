@@ -22,7 +22,7 @@ const SongsTabContent = () => {
 					</div>
 					{/* Controls: Sort, Search, Add */}
       <div className='flex  flex-row gap-2 md:items-center w-full md:w-auto'>
-					   {/* Search Input */}
+					
 							  <Button
           variant="ghost"
           size="icon"
