@@ -13,7 +13,7 @@ const TopBar = () => {
 	console.log({ isAdmin });
 const [searchQuery, setSearchQuery] = useState("");
 
-	const handleSearch = (e) => {
+	const handleSearch = (e:any) => {
 		e.preventDefault();
 		console.log("Search:", searchQuery); // Handle the search logic here
 	};
