@@ -34,18 +34,20 @@ const ChatPage = () => {
 
 	return (
 		<main className='h-[100dvh] bg-gradient-to-b  from-zinc-800 to-zinc-900 flex flex-col'>
-			<div className=""><Topbar /></div>
+			<div className="sticky top-0 z-50"><Topbar /></div>
 
 			<div className='grid lg:grid-cols-[300px_1fr] grid-cols-[80px_1fr]  flex-1 overflow-hidden'>
 		{selectedUser ? (
-			<div className="mt-12">	<UsersList /></div>
-		):<div >	<UsersList /></div>}
+			<div className="mt-24" >	<UsersList /></div>
+		):<div className="" >	<UsersList /></div>}
 				<div className='flex flex-col h-full overflow-hidden'>
 					{selectedUser ? (
 						<>
-						<div className="mt-12"><ChatHeader  /></div>	
+						
+						<div className="mt-28"><ChatHeader  /></div>	
 
 							{/* Messages area */}
+							
 							<div className='flex-1 overflow-y-auto px-4 py-3  space-y-4'>
 								{messages.map((message) => (
 									<div
@@ -84,7 +86,9 @@ const ChatPage = () => {
 							<MessageInput />
 						</>
 					) : (
-						<NoConversationPlaceholder />
+						<div className="flex-1 flex items-center justify-center">
+      <NoConversationPlaceholder />
+    </div>
 					)}
 				</div>
 			</div>
@@ -95,7 +99,7 @@ const ChatPage = () => {
 export default ChatPage;
 
 const NoConversationPlaceholder = () => (
-	<div className='flex flex-col items-center justify-center h-full space-y-6'>
+	<div className='flex flex-col items-center justify-center flex-1 space-y-6'>
 		<img src='/resono.png' alt='Resono' className='size-16 animate-bounce' />
 		<div className='text-center'>
 			<h3 className='text-zinc-300 text-lg font-medium mb-1'>No conversation selected</h3>
