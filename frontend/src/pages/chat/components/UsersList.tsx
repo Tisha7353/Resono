@@ -5,14 +5,8 @@ import { useChatStore } from "@/stores/useChatStore";
 import { useUser } from "@clerk/clerk-react";
 import { ChevronLeft } from "lucide-react";
 
-const UsersList = ({
-  isOpen,
-  setIsOpen,
-}: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { users, selectedUser, isLoading, setSelectedUser, onlineUsers } =
+const UsersList = () => {
+  const { users, selectedUser,isOpen,setIsOpen, isLoading, setSelectedUser, onlineUsers } =
     useChatStore();
   const { user } = useUser();
   const loggedInClerkId = user?.id;

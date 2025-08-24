@@ -2,14 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useChatStore } from "@/stores/useChatStore";
 import { ChevronRight } from "lucide-react";
 
-const ChatHeader = ({
-  isOpen,
-  setIsOpen,
-}: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { selectedUser, onlineUsers } = useChatStore();
+const ChatHeader = () => {
+  const { selectedUser, onlineUsers,isOpen,setIsOpen } = useChatStore();
 
   if (!selectedUser) return null;
 

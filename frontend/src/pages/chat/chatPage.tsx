@@ -1,7 +1,7 @@
 import Topbar from "@/components/TopBar";
 import { useChatStore } from "@/stores/useChatStore";
 import { useUser } from "@clerk/clerk-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 import UsersList from "./components/UsersList";
 import ChatHeader from "./components/ChatHeader";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -18,9 +18,9 @@ const formatTime = (date: string) => {
 
 const ChatPage = () => {
   const { user } = useUser();
-  const { messages, selectedUser, fetchUsers, fetchMessages } = useChatStore();
+  const { messages, selectedUser,isOpen, fetchUsers, fetchMessages } = useChatStore();
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  
 
   useEffect(() => {
     if (user) fetchUsers();
@@ -46,7 +46,7 @@ const ChatPage = () => {
         }`}
       >
 		
-        <UsersList isOpen={isOpen} setIsOpen={setIsOpen} />
+        <UsersList  />
 
       <div
   className={`flex flex-col pt-[104px] h-full overflow-hidden relative ${
@@ -57,7 +57,7 @@ const ChatPage = () => {
           {selectedUser ? (
             <>
               {/* Chat Header */}
-              <ChatHeader isOpen={isOpen} setIsOpen={setIsOpen} />
+              <ChatHeader  />
 
               {/* Messages area */}
               <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
@@ -99,7 +99,7 @@ const ChatPage = () => {
             </>
           ) : (
             <div className="flex-1 flex items-center justify-center">
-              <NoConversationPlaceholder isOpen={isOpen} setIsOpen={setIsOpen}/>
+              <NoConversationPlaceholder />
             </div>
           )}
         </div>
@@ -110,13 +110,9 @@ const ChatPage = () => {
 
 export default ChatPage;
 
-const NoConversationPlaceholder = ({
-  isOpen,
-  setIsOpen,
-}: {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) => (
+const NoConversationPlaceholder = () => {
+   const { isOpen, setIsOpen } = useChatStore();
+  return( 
   <div className="flex flex-col p-4 items-center justify-center flex-1 space-y-6">
     <img src="/resono.png" alt="Resono" className="size-16 animate-bounce" />
     <div className="text-center">
@@ -125,7 +121,7 @@ const NoConversationPlaceholder = ({
       </h3>
       <p className="text-zinc-500 text-sm">Choose a friend to start chatting</p>
     </div>
-	    {/* 👉 Show button when sidebar is closed */}
+	 
     {!isOpen && (
       <button
         className="px-3 py-1 rounded-md bg-zinc-800 text-white text-sm flex items-center gap-1 hover:bg-zinc-700"
@@ -134,5 +130,5 @@ const NoConversationPlaceholder = ({
         <ChevronRight className="h-4 w-4" /> Show Chats
       </button>
     )}
-  </div>
-);
+  </div>)
+};

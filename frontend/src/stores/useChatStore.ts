@@ -13,6 +13,7 @@ interface ChatStore {
 	userActivities: Map<string, string>;
 	messages: Message[];
 	selectedUser: User | null;
+	isOpen: boolean;
 
 	fetchUsers: () => Promise<void>;
 	initSocket: (userId: string) => void;
@@ -20,6 +21,7 @@ interface ChatStore {
 	sendMessage: (receiverId: string, senderId: string, content: string) => void;
 	fetchMessages: (userId: string) => Promise<void>;
 	setSelectedUser: (user: User | null) => void;
+	setIsOpen: (open: boolean) => void;
 }
 
 const baseURL = import.meta.env.MODE === "development" ? "http://localhost:5000" 
@@ -40,8 +42,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 	userActivities: new Map(),
 	messages: [],
 	selectedUser: null,
+	isOpen: true,
 
 	setSelectedUser: (user) => set({ selectedUser: user }),
+    setIsOpen: (open) => set({ isOpen: open }),
 
 	fetchUsers: async () => {
 		set({ isLoading: true, error: null });

@@ -4,17 +4,22 @@ import { useChatStore } from "@/stores/useChatStore";
 import { useUser } from "@clerk/clerk-react";
 import { Users } from "lucide-react";
 import { useEffect } from "react";
-
+import {  useNavigate } from "react-router-dom";
 const FriendsActivity = () => {
-	const { users, fetchUsers, onlineUsers } = useChatStore();
+	const { users, fetchUsers, onlineUsers,setSelectedUser,setIsOpen } = useChatStore();
 	const { user } = useUser();
+const navigate=useNavigate();
 
 	useEffect(() => {
 		if (user) fetchUsers();
 	}, [fetchUsers, user]);
 
 	const onlineFriends = users.filter((u) => onlineUsers.has(u.clerkId) && u.clerkId !== user?.id);
-
+    const handleFriendClick=(friend:any)=>{
+		setSelectedUser(friend)
+		setIsOpen(false)
+      navigate('/chat')
+	}
 	return (
 		<div className='h-full bg-zinc-900 rounded-lg flex flex-col'>
 			<div className='p-4 flex justify-between items-center border-b border-zinc-800'>
@@ -32,31 +37,40 @@ const FriendsActivity = () => {
 						<div className="text-zinc-400 text-sm text-center">No friends are online right now.</div>
 					)}
 
-					{onlineFriends.map((user) => (
-						<div
-							key={user._id}
-							className='cursor-pointer hover:bg-zinc-800/50 p-3 rounded-md transition-colors group'
-						>
-							<div className='flex items-start gap-3'>
-								<div className='relative'>
-									<Avatar className='size-10 border border-zinc-800'>
-										<AvatarImage src={user.imageUrl} alt={user.fullName} />
-										<AvatarFallback>{user.fullName[0]}</AvatarFallback>
-									</Avatar>
-									<div
-										className='absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-zinc-900 bg-[#d63754]'
-										aria-hidden='true'
-									/>
-								</div>
+					{onlineFriends.map((friend) => {
+  const activity = useChatStore.getState().userActivities.get(friend.clerkId) || "Idle";
 
-								<div className='flex-1 min-w-0'>
-									<div className='flex items-center gap-2'>
-										<span className='font-medium text-sm text-white'>{user.fullName}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					))}
+  return (
+    <div
+      key={friend._id}
+	  onClick={()=>handleFriendClick(friend)}
+      className='cursor-pointer hover:bg-zinc-800/50 p-3 rounded-md transition-colors group'
+    >
+      <div className='flex items-start gap-3'>
+        <div className='relative'>
+          <Avatar className='size-10 border border-zinc-800'>
+            <AvatarImage src={friend.imageUrl} alt={friend.fullName} />
+            <AvatarFallback>{friend.fullName[0]}</AvatarFallback>
+          </Avatar>
+          <div
+            className='absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-zinc-900 bg-[#22c55e]'
+            aria-hidden='true'
+          />
+        </div>
+
+        <div className='flex-1 min-w-0'>
+          <div className='flex items-center gap-2'>
+            <span className='font-medium text-sm text-white'>{friend.fullName}</span>
+          </div>
+          <p className='text-xs text-zinc-400 truncate'>
+            {activity}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+})}
+
 				</div>
 			</ScrollArea>
 		</div>
