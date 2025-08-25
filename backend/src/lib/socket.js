@@ -13,7 +13,7 @@ export const initializeSocket = (server) => {
 	const userActivities = new Map(); // { userId: activity }
 
 	io.on("connection", (socket) => {
-		console.log("🔌 New socket connected:", socket.id);
+		
 
 		socket.on("user_connected", (userId) => {
 			
