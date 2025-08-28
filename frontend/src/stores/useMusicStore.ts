@@ -3,6 +3,16 @@ import type { Album,Song,Stats } from "@/types";
 import toast from "react-hot-toast";
 import { create } from "zustand";
 
+type SortOrder = "asc" | "desc";
+
+interface Filters {
+  albums: string[];
+  artists: string[];
+  dateFrom: string;
+  dateTo: string;
+}
+
+
 interface MusicStore {
 	songs: Song[];
 	albums: Album[];
@@ -13,6 +23,15 @@ interface MusicStore {
 	madeForYouSongs: Song[];
 	trendingSongs: Song[];
 	stats: Stats;
+
+	  searchTerm: string;
+  sortOrder: SortOrder;
+  filters: Filters;
+
+  setSearchTerm: (term: string) => void;
+  toggleSortOrder: () => void;
+  applyFilters: (filters: Filters) => void;
+  clearFilters: () => void;
 
 	fetchAlbums: () => Promise<void>;
 	fetchAlbumById: (id: string) => Promise<void>;
@@ -42,6 +61,24 @@ export const useMusicStore = create<MusicStore>((set) => ({
 		totalUsers: 0,
 		totalArtists: 0,
 	},
+
+ searchTerm: "",
+  sortOrder: "desc",
+  filters: {
+    albums: [],
+    artists: [],
+    dateFrom: "",
+    dateTo: "",
+  },
+
+  setSearchTerm: (term) => set({ searchTerm: term }),
+  toggleSortOrder: () =>
+    set((state) => ({ sortOrder: state.sortOrder === "asc" ? "desc" : "asc" })),
+  applyFilters: (filters) => set({ filters }),
+  clearFilters: () =>
+    set({
+      filters: { albums: [], artists: [], dateFrom: "", dateTo: "" },
+    }),
 
 	deleteSong: async (id) => {
 		set({ isLoading: true, error: null });

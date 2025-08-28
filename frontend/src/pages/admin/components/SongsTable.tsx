@@ -2,27 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useMusicStore } from "@/stores/useMusicStore";
 import { Calendar, Trash2, X } from "lucide-react";
-import React, { useMemo } from 'react';
+import  { useMemo } from 'react';
 
-interface SongsTableProps {
-  searchTerm: string;
-  sortOrder: "asc" | "desc";
-  filters?: {
-    albums: string[];
-    artists: string[];
-    dateFrom: string;
-    dateTo: string;
-  };
-  onClearFilters?: () => void;
-}
 
-const SongsTable: React.FC<SongsTableProps> = ({ 
-  searchTerm, 
-  sortOrder, 
-  filters = { albums: [], artists: [], dateFrom: "", dateTo: "" },
-  onClearFilters 
-}) => {
-  const { songs, albums, fetchStats, isLoading, error, deleteSong } = useMusicStore();
+const SongsTable = () => {
+  const { songs, albums, fetchStats, isLoading, error, deleteSong,searchTerm,filters,clearFilters,sortOrder } = useMusicStore();
 
   // Apply all filters (search + advanced filters)
   const filteredSongs = useMemo(() => {
@@ -125,11 +109,11 @@ const SongsTable: React.FC<SongsTableProps> = ({
             </div>
           </div>
           
-          {onClearFilters && (
+          {clearFilters && (
             <Button
               variant="ghost"
               size="sm"
-              onClick={onClearFilters}
+              onClick={clearFilters}
               className="text-zinc-400 hover:text-white"
             >
               <X className="w-4 h-4 mr-1" />

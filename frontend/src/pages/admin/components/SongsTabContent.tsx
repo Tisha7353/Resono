@@ -4,33 +4,18 @@ import SongsTable from "./SongsTable";
 import AddSongDialog from "./AddSongDialog";
 import FilterSongsDialog from "./FilterSongsDialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
+import { useMusicStore } from "@/stores/useMusicStore";
 
 const SongsTabContent = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  
-  // Filter state
-  const [filters, setFilters] = useState({
-    albums: [],
-    artists: [],
-    dateFrom: "",
-    dateTo: ""
-  });
+ 
+   const { searchTerm, setSearchTerm, sortOrder, toggleSortOrder} =
+    useMusicStore();
 
-  const handleFiltersApply = (newFilters:any) => {
-    setFilters(newFilters);
-  };
 
-  const clearAllFilters = () => {
-    setFilters({
-      albums: [],
-      artists: [],
-      dateFrom: "",
-      dateTo: ""
-    });
-  };
+
+
 
 
   return (
@@ -49,16 +34,14 @@ const SongsTabContent = () => {
           <div className='flex flex-row gap-2 md:items-center w-full md:w-auto'>
             {/* Filter Dialog */}
             <FilterSongsDialog 
-              onFiltersApply={handleFiltersApply}
-              activeFilters={filters}
-              onClearFilters={clearAllFilters}
+           
             />
 
             {/* Sort Button */}
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))}
+                 onClick={toggleSortOrder}
               className="text-zinc-200 border-gray-200 rounded-md border-[0.5px] hover:text-white"
               title={`Sort ${sortOrder === "asc" ? "Newest First" : "Oldest First"}`}
             >
@@ -86,10 +69,7 @@ const SongsTabContent = () => {
       
       <CardContent>
         <SongsTable 
-          searchTerm={searchTerm} 
-          sortOrder={sortOrder}  
-          filters={filters}
-          onClearFilters={clearAllFilters}
+        
         />
       </CardContent>
     </Card>

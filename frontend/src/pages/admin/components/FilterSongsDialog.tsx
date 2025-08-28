@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { useMusicStore } from '@/stores/useMusicStore';
 import { Filter, ChevronDown, ChevronUp, X } from 'lucide-react';
-import React, { useState, useMemo, useEffect, useRef } from 'react'
+import  { useState, useMemo, useEffect, useRef } from 'react'
 
 // ---------------------------
 // MultiSelect Component
@@ -221,40 +221,21 @@ const MultiSelect = ({
 // FilterSongsDialog Component
 // ---------------------------
 
-interface FilterSongsDialogProps {
-  onFiltersApply: (filters: {
-    albums: string[];
-    artists: string[];
-    dateFrom: string;
-    dateTo: string;
-  }) => void;
-  activeFilters: {
-    albums: string[];
-    artists: string[];
-    dateFrom: string;
-    dateTo: string;
-  };
-  onClearFilters?: () => void;
-}
-
-const FilterSongsDialog: React.FC<FilterSongsDialogProps> = ({
-  onFiltersApply,
-  activeFilters,
-}) => {
+const FilterSongsDialog=() => {
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
-  const { albums, songs } = useMusicStore();
-
-  const [albumFilter, setAlbumFilter] = useState<string[]>(activeFilters.albums);
-  const [artistFilter, setArtistFilter] = useState<string[]>(activeFilters.artists);
-  const [dateFrom, setDateFrom] = useState(activeFilters.dateFrom);
-  const [dateTo, setDateTo] = useState(activeFilters.dateTo);
+  const { albums, songs,filters,applyFilters } = useMusicStore();
+  
+  const [albumFilter, setAlbumFilter] = useState<string[]>(filters.albums);
+  const [artistFilter, setArtistFilter] = useState<string[]>(filters.artists);
+  const [dateFrom, setDateFrom] = useState(filters.dateFrom);
+  const [dateTo, setDateTo] = useState(filters.dateTo);
 
   useEffect(() => {
-    setAlbumFilter(activeFilters.albums);
-    setArtistFilter(activeFilters.artists);
-    setDateFrom(activeFilters.dateFrom);
-    setDateTo(activeFilters.dateTo);
-  }, [activeFilters]);
+    setAlbumFilter(filters.albums);
+    setArtistFilter(filters.artists);
+    setDateFrom(filters.dateFrom);
+    setDateTo(filters.dateTo);
+  }, [filters]);
 
   const uniqueArtists = [...new Set(songs.map((s) => s.artist))];
 
@@ -275,7 +256,7 @@ const FilterSongsDialog: React.FC<FilterSongsDialogProps> = ({
     setDateTo("");
   };
 
-  const applyFilters = () => {
+  const applyNewFilters = () => {
     const newFilters = {
       albums: albumFilter,
       artists: artistFilter,
@@ -283,17 +264,17 @@ const FilterSongsDialog: React.FC<FilterSongsDialogProps> = ({
       dateTo,
     };
 
-    onFiltersApply(newFilters);
+    applyFilters(newFilters);
     setFilterDialogOpen(false);
   };
 
   const hasActiveFilters =
     albumFilter.length > 0 || artistFilter.length > 0 || dateFrom || dateTo;
   const hasGlobalActiveFilters =
-    activeFilters.albums.length > 0 ||
-    activeFilters.artists.length > 0 ||
-    activeFilters.dateFrom ||
-    activeFilters.dateTo;
+    filters.albums.length > 0 ||
+    filters.artists.length > 0 ||
+    filters.dateFrom ||
+    filters.dateTo;
 
   return (
     <Dialog open={filterDialogOpen} onOpenChange={setFilterDialogOpen}>
@@ -311,10 +292,10 @@ const FilterSongsDialog: React.FC<FilterSongsDialogProps> = ({
           Filter
           {hasGlobalActiveFilters && (
             <span className="ml-2 px-1.5 py-0.5 text-xs bg-white text-purple-600 rounded-full">
-              {activeFilters.albums.length +
-                activeFilters.artists.length +
-                (activeFilters.dateFrom ? 1 : 0) +
-                (activeFilters.dateTo ? 1 : 0)}
+              {filters.albums.length +
+                filters.artists.length +
+                (filters.dateFrom ? 1 : 0) +
+                (filters.dateTo ? 1 : 0)}
             </span>
           )}
         </Button>
@@ -408,7 +389,7 @@ const FilterSongsDialog: React.FC<FilterSongsDialogProps> = ({
             </Button>
             <Button
               className="bg-purple-600 hover:bg-purple-700 flex-1"
-              onClick={applyFilters}
+              onClick={applyNewFilters}
             >
               Apply Filters
             </Button>
