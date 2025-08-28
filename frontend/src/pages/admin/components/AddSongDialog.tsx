@@ -97,8 +97,8 @@ await fetchSongs();
 		<Dialog open={songDialogOpen} onOpenChange={setSongDialogOpen}>
 			<DialogTrigger asChild>
 				<Button className='bg-[#D63754] hover:bg-[#e35e76] text-black'>
-					<Plus className='mr-2 h-4 w-4' />
-					Add Song
+					<Plus className='lg:mr-2 h-4 w-4' />
+					<span className="hidden lg:inline">Add Song</span>
 				</Button>
 			</DialogTrigger>
 

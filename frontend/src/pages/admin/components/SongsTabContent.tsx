@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {  Music, SortAsc, SortDesc } from "lucide-react";
+import { Music, SortAsc, SortDesc } from "lucide-react";
 import SongsTable from "./SongsTable";
 import AddSongDialog from "./AddSongDialog";
 import FilterSongsDialog from "./FilterSongsDialog";
@@ -9,14 +9,8 @@ import { Button } from "@/components/ui/button";
 import { useMusicStore } from "@/stores/useMusicStore";
 
 const SongsTabContent = () => {
- 
-   const { searchTerm, setSearchTerm, sortOrder, toggleSortOrder} =
-    useMusicStore();
 
-
-
-
-
+  const { searchTerm, setSearchTerm, sortOrder, toggleSortOrder } = useMusicStore();
 
   return (
     <Card>
@@ -29,19 +23,19 @@ const SongsTabContent = () => {
             </CardTitle>
             <CardDescription>Manage your music tracks</CardDescription>
           </div>
-          
+
           {/* Controls: Filter, Sort, Search, Add */}
           <div className='flex flex-row gap-2 md:items-center w-full md:w-auto'>
             {/* Filter Dialog */}
-            <FilterSongsDialog 
-           
+            <FilterSongsDialog
+
             />
 
             {/* Sort Button */}
             <Button
               variant="ghost"
               size="icon"
-                 onClick={toggleSortOrder}
+              onClick={toggleSortOrder}
               className="text-zinc-200 border-gray-200 rounded-md border-[0.5px] hover:text-white"
               title={`Sort ${sortOrder === "asc" ? "Newest First" : "Oldest First"}`}
             >
@@ -66,10 +60,10 @@ const SongsTabContent = () => {
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent>
-        <SongsTable 
-        
+        <SongsTable
+
         />
       </CardContent>
     </Card>

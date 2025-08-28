@@ -111,9 +111,9 @@ const MultiSelect = ({
                 key={label}
                 className="inline-flex items-center gap-1 px-2 py-1 text-xs bg-purple-600 text-white rounded"
               >
-                {label}
+                <span className="truncate max-w-[100px] sm:max-w-[150px]">{label}</span>
                 <X
-                  className="w-3 h-3 cursor-pointer hover:bg-purple-700 rounded"
+                  className="w-3 h-3 cursor-pointer hover:bg-purple-700 rounded flex-shrink-0"
                   onClick={(e) =>
                     handleRemoveSelected(
                       selected.find(
@@ -132,9 +132,9 @@ const MultiSelect = ({
           )}
         </div>
         {isOpen ? (
-          <ChevronUp className="w-4 h-4 text-zinc-400" />
+          <ChevronUp className="w-4 h-4 text-zinc-400 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-4 h-4 text-zinc-400" />
+          <ChevronDown className="w-4 h-4 text-zinc-400 flex-shrink-0" />
         )}
       </div>
 
@@ -148,13 +148,13 @@ const MultiSelect = ({
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-zinc-700 border-zinc-600 text-white placeholder-zinc-400"
+                className="bg-zinc-700 border-zinc-600 text-white placeholder-zinc-400 text-sm"
                 autoFocus
               />
             </div>
           )}
 
-          <div className="max-h-48 overflow-y-auto">
+          <div className="max-h-40 sm:max-h-48 overflow-y-auto">
             {filteredOptions.length === 0 ? (
               <div className="p-3 text-sm text-zinc-400 text-center">
                 {searchTerm ? "No results found" : "No options available"}
@@ -168,9 +168,9 @@ const MultiSelect = ({
                 >
                   <Checkbox
                     checked={selected.includes(option.value)}
-                    className="pointer-events-none"
+                    className="pointer-events-none flex-shrink-0"
                   />
-                  <span className="flex-1">{option.label}</span>
+                  <span className="flex-1 truncate">{option.label}</span>
                 </div>
               ))
             )}
@@ -178,11 +178,11 @@ const MultiSelect = ({
 
           {/* Select All / Done */}
           {filteredOptions.length > 0 && (
-            <div className="flex justify-between p-2 border-t border-zinc-600">
+            <div className="flex justify-between p-2 border-t border-zinc-600 gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-purple-400 hover:text-purple-300"
+                className="text-xs text-purple-400 hover:text-purple-300 flex-1"
                 onClick={() => {
                   const allValues = filteredOptions.map((opt: any) => opt.value);
                   const hasAll = allValues.every((val: any) =>
@@ -204,7 +204,7 @@ const MultiSelect = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs text-zinc-400 hover:text-zinc-300"
+                className="text-xs text-zinc-400 hover:text-zinc-300 flex-1"
                 onClick={() => setIsOpen(false)}
               >
                 Done
@@ -281,17 +281,17 @@ const FilterSongsDialog=() => {
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          size="sm"
-          className={`text-zinc-200 border border-zinc-600 rounded-md hover:text-white transition-colors ${
+      
+          className={`text-zinc-200 border-zinc-600 rounded-md hover:text-white border-[0.5px] transition-colors ${
             hasGlobalActiveFilters
               ? "bg-purple-600 hover:bg-purple-700 border-purple-500"
               : "border-gray-200"
           }`}
         >
-          <Filter className="w-4 h-4 mr-2" />
-          Filter
+          <Filter className="w-4 h-4 mr-1 sm:mr-2" />
+          <span className="hidden sm:inline">Filter</span>
           {hasGlobalActiveFilters && (
-            <span className="ml-2 px-1.5 py-0.5 text-xs bg-white text-purple-600 rounded-full">
+            <span className="ml-1 sm:ml-2 px-1.5 py-0.5 text-xs bg-white text-purple-600 rounded-full">
               {filters.albums.length +
                 filters.artists.length +
                 (filters.dateFrom ? 1 : 0) +
@@ -301,15 +301,15 @@ const FilterSongsDialog=() => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[80vh] overflow-auto max-w-md">
-        <DialogHeader>
-          <DialogTitle>Filter Songs</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="bg-zinc-900 border-zinc-700 max-h-[90vh] sm:max-h-[85vh] overflow-auto w-[95vw] sm:w-full max-w-[400px] sm:max-w-md mx-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-lg sm:text-xl">Filter Songs</DialogTitle>
+          <DialogDescription className="text-sm">
             Apply filters to refine your music library
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6 mt-4">
+        <div className="space-y-4 sm:space-y-6 mt-2">
           {/* Album Filter */}
           <div className="space-y-2">
             <h3 className="text-sm text-zinc-300 font-medium">Albums</h3>
@@ -339,22 +339,22 @@ const FilterSongsDialog=() => {
           {/* Release Date Filter */}
           <div className="space-y-2">
             <h3 className="text-sm text-zinc-300 font-medium">Release Date</h3>
-            <div className="flex gap-2 items-center">
+            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
               <div className="flex-1">
                 <Input
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
-                  className="bg-zinc-800 border-zinc-600 text-white"
+                  className="bg-zinc-800 border-zinc-600 text-white text-sm w-full"
                 />
               </div>
-              <span className="text-zinc-400 text-sm">to</span>
+              <span className="text-zinc-400 text-sm text-center sm:text-left sm:px-2">to</span>
               <div className="flex-1">
                 <Input
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
-                  className="bg-zinc-800 border-zinc-600 text-white"
+                  className="bg-zinc-800 border-zinc-600 text-white text-sm w-full"
                 />
               </div>
             </div>
@@ -374,7 +374,7 @@ const FilterSongsDialog=() => {
                   <div>Artists: {artistFilter.length} selected</div>
                 )}
                 {(dateFrom || dateTo) && (
-                  <div>
+                  <div className="break-words">
                     Date: {dateFrom || "Any"} to {dateTo || "Any"}
                   </div>
                 )}
@@ -383,12 +383,16 @@ const FilterSongsDialog=() => {
           )}
 
           {/* Action Buttons */}
-          <div className="flex justify-between gap-2 pt-4 border-t border-zinc-700">
-            <Button variant="outline" onClick={resetFilters} className="flex-1">
+          <div className="flex flex-col sm:flex-row justify-between gap-2 pt-4 border-t border-zinc-700">
+            <Button 
+              variant="outline" 
+              onClick={resetFilters} 
+              className="w-full sm:flex-1 text-sm"
+            >
               Reset All
             </Button>
             <Button
-              className="bg-purple-600 hover:bg-purple-700 flex-1"
+              className="bg-purple-600 hover:bg-purple-700 w-full sm:flex-1 text-sm"
               onClick={applyNewFilters}
             >
               Apply Filters
